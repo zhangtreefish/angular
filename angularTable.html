@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<body>
+		<div ng-app="myApp" ng-controller="customersCtrl"> 
+			<div class="alert alert-info">
+			    <p>Sort Type: {{ sortType }}</p>
+			    <p>Sort Reverse: {{ sortReverse }}</p>
+			    <p>Search Query: {{ searchCountry }}</p>
+			</div>
+
+			<div>
+				<p>
+				<button ng-disabled="mySwitch">Click Me!</button>
+				</p>
+
+				<p>
+				<input type="checkbox" ng-model="mySwitch">Button
+				</p>
+
+				<p ng-show="true">I am visible.</p>
+
+				<p ng-show="false">I am not visible.</p>
+
+				<button ng-click="count = count + 1">Click me to see if I am paying attention!</button>
+				<p> The click count: {{ count }}</p>
+
+				<div ng-controller="personCtrl"> <!--personCtrl is the controller, myVar is the handle, ng-model is the final target of control;is the ng-click is the pistol -->
+
+					<button ng-click="toggle()">Toggle</button>
+
+					<p ng-show="myVar">
+					First Name: <input type="text" ng-model="firstName"><br>
+					Last Name: <input type="text" ng-model="lastName"><br>
+					<br>
+					Full Name: {{firstName + " " + lastName}}
+					<p>master = {{master}}</p>
+					</p>
+
+				</div>
+
+				<div ng-app="myApp" ng-controller="formCtrl">
+  					<form novalidate>
+    					First Name:<br>
+    					<input type="text" ng-model="user.firstName"><br>
+    					Last Name:<br>
+    					<input type="text" ng-model="user.lastName">
+    					<br><br>
+    					<button ngClick="reset()">RESET</button>
+  					</form>
+  					<p>form = {{user }}</p>
+  					<p>master = {{master}}</p>
+				</div>
+
+			</div>
+
+			<table>
+			  	<thead>
+			  		<tr style="background-color:green">
+			  			<td> No. </td>
+			  			<td width= "50px"> Name </td>
+			  			<td> Country </td>
+			  		</tr>
+			  	</thead>
+
+			  	<tbody>
+			  		<tr ng-repeat="x in kames | orderBy: 'country'">
+					    <td ng-if="$odd" style="background-color:#f1f1f1">{{ $index + 1 }} </td>
+					    <td ng-if="$even" style="background-color:red">{{ $index + 1 }} </td>
+					    <td ng-if="$odd" style="background-color:#f1f1f1">{{ x.Name }} </td>
+					    <td ng-if="$even" style="background-color:red">{{x.Name }} </td>
+					    <td ng-if="$odd" style="background-color:#f1f1f1">{{ x.Country }} </td>
+					    <td ng-if="$even" style="background-color:red">{{x.Country }} </td>
+			  		</tr>
+			  	</tbody>
+			</table>
+	 	</div>
+
+		<script>
+			var app = angular.module('myApp', []);
+
+			app.controller('customersCtrl', function($scope, $http) {
+			    $http.get("http://www.w3schools.com/angular/customers.php")
+			    .success(function(response) {$scope.kames = response.records;});
+			});
+
+			app.controller('personCtrl', function($scope) {
+    			//$scope.firstName = "",
+    			//$scope.lastName = ""
+    			$scope.master = {firstName:"John", lastName:"Doe"};
+    			$scope.myVar = true;
+    			$scope.toggle = function() {
+        			$scope.myVar = !$scope.myVar;
+    			}
+    		});
+
+			app.controller('formCtrl', function($scope) {
+    			$scope.master = {firstName:"John", lastName:"Doe"};
+    			$scope.reset = function() {
+        			$scope.user = angular.copy($scope.master);
+    			};
+    			$scope.reset();
+    		});
+		</script>
+				
+	</body>
+</html>
