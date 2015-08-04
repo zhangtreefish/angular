@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<body>
+		<div ng-app="myCat">
+			<div ng-controller="catCtrl">
+				<p> Cat Looking </p>
+				<p> The click count: {{ count }}</p>
+				<img ng-click="count = count + 1" id="cat-pic" src="http://placekitten.com/g/200/300" alt="cat" >
+			</div>
+			<div ng-controller="catCtrl">
+				<p> Cat Walking </p>
+				<p> The click count: {{ count }}</p>
+				<img ng-click="count = count + 1" id="cat-pic" src="https://www.kasandbox.org/programming-images/misc/cat-walk.gif" alt="cat">
+			</div>
+		</div>
+		<script>
+			var app = angular.module('myCat', []);
+			app.controller('catCtrl', function($scope) {
+				$scope.count = 0;
+			});
+		</script>
+	</body>
+</html>
