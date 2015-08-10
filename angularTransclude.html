@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<body ng-app="myApp">
+		<div ng-controller="customersCtrl"> 
+			<ul>
+			  <li ng-repeat="x in kames">
+			    {{ x.Name + ', ' + x.Country }}
+			  </li>
+			</ul>
+	 	</div>
+	 	<div my-directive>
+    		<button>some button</button>
+    		<a href="#">and a link</a>
+		</div>
+
+		<script>
+			var app = angular.module('myApp', []);
+			app.controller('customersCtrl', function($scope, $http) {
+			    $http.get("http://www.w3schools.com/angular/customers.php")
+			    .success(function(response) {$scope.kames = response.records;});
+			});
+			app.directive('myDirective', function(){
+    			return{
+        			transclude: false, //in the shadow if true; front-line if false.
+        			template: '<div class="something" ng-transclude> This is my directive content</div>'
+    			}
+			});
+		</script>
+	</body>
+</html>
