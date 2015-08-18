@@ -9,20 +9,26 @@
 			  </li>
 			</ul>
 	 	</div>
-	 	<div my-directive>
-    		<button>some button</button>
-    		<a href="#">and a link</a>
-		</div>
+	 	<my-directive>
+    		<button>?</button>
+    		<a href="#"> 'N/A' denotes a lack of data </a>
+		</my-directive>
 
 		<script>
+			//set up myApp
 			var app = angular.module('myApp', []);
 			app.controller('customersCtrl', function($scope, $http) {
 			    $http.get("http://www.w3schools.com/angular/customers.php")
 			    .success(function(response) {$scope.kames = response.records;});
 			});
+
+			//set up a boolean for info state
+			var alertState = true;
+
+			//set up a custom directive to display alertinfo
 			app.directive('myDirective', function(){
     			return{
-        			transclude: false, //in the shadow if true; front-line if false.
+        			transclude: alertState, //in the shadow if true; front-line if false.
         			template: '<div class="something" ng-transclude> This is my directive content</div>'
     			}
 			});
