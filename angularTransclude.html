@@ -8,44 +8,46 @@
 			    {{ x.Name + ', ' + x.Country }}
 			  </li>
 			</ul>
-	 	</div>
 	 	
- 		<my-directive>
-			<button>?</button>
-			<a href="#"> 'N/A' denotes a lack of data </a>
-		</my-directive>
-	
+	 	
+ 			<div ng-if="showInfo()"> Am I visible? </div>
+ 		</div>
 		<script>
 			//set up myApp
-		  var app = angular.module('myApp', []);
+		  	var app = angular.module('myApp', []);
 			app.controller('customersCtrl', function($scope, $http) {
 			    $http.get("http://www.w3schools.com/angular/customers.php")
 			    .success(function(response) {$scope.kames = response.records;});
-			    var vm = this;
-			 });
+			
 
 			//set up a boolean for info state
-			this.infoHideState = true;
-			this.infoState = false;
-
+			function hasIt(element, index, array) {
+				return {element.Country === 'UK'};
+			};
+			 
+			$scope.showInfo = function(){
+				return
+			    $scope.kames.some(hasIt); 
+			};
+		});
 			//traverse the kames array updating alert status
-			var log = [];
-			angular.forEach(app.kames, function(person,log) {
-				if (person.country==='UK') {
+			/*var log = [];
+			angular.forEach(kames, function(person) {
+				if (person.country==='U') {
 					app.infoHideState = false;
 					this.infoState = true;
 					console.log(app.infoHideState+person.country);
 				}
-			},log);
+			},log);*/
 				
 			//set up a custom directive to display alertinfo
-			app.directive('myDirective', function(){
+		/*	app.directive('myDirective', function(){
     			return{
         			restrict: "E",
         			transclude: app.infoHideState, //in the shadow if true; front-line if false.
-        			template: '<div class="something" ng-transclude> N/A: No data available due to the unmet requirement of the metrics for at least 5 iteration cycles for each project. </div>'+'<div> '+this.infoHideState +'</div>'
+        			template: '<div class="something"> N/A: No data available due to the unmet requirement of the metrics for at least 5 iteration cycles for each project. </div>'+'<div> '+this.infoHideState +'</div>'
     			}
-			});
+			});*/
 		</script>
 	</body>
 </html>
