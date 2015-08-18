@@ -9,27 +9,41 @@
 			  </li>
 			</ul>
 	 	</div>
-	 	<my-directive>
-    		<button>?</button>
-    		<a href="#"> 'N/A' denotes a lack of data </a>
+	 	
+ 		<my-directive>
+			<button>?</button>
+			<a href="#"> 'N/A' denotes a lack of data </a>
 		</my-directive>
-
+	
 		<script>
 			//set up myApp
-			var app = angular.module('myApp', []);
+		  var app = angular.module('myApp', []);
 			app.controller('customersCtrl', function($scope, $http) {
 			    $http.get("http://www.w3schools.com/angular/customers.php")
 			    .success(function(response) {$scope.kames = response.records;});
-			});
+			    var vm = this;
+			 });
 
 			//set up a boolean for info state
-			var alertState = true;
+			this.infoHideState = true;
+			this.infoState = false;
 
+			//traverse the kames array updating alert status
+			var log = [];
+			angular.forEach(app.kames, function(person,log) {
+				if (person.country==='UK') {
+					app.infoHideState = false;
+					this.infoState = true;
+					console.log(app.infoHideState+person.country);
+				}
+			},log);
+				
 			//set up a custom directive to display alertinfo
 			app.directive('myDirective', function(){
     			return{
-        			transclude: alertState, //in the shadow if true; front-line if false.
-        			template: '<div class="something" ng-transclude> This is my directive content</div>'
+        			restrict: "E",
+        			transclude: app.infoHideState, //in the shadow if true; front-line if false.
+        			template: '<div class="something" ng-transclude> N/A: No data available due to the unmet requirement of the metrics for at least 5 iteration cycles for each project. </div>'+'<div> '+this.infoHideState +'</div>'
     			}
 			});
 		</script>
