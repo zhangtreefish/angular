@@ -1,53 +1,79 @@
 <!DOCTYPE html>
 <html lang="en-US">
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
-	<body ng-app="myApp">
-		<div ng-controller="customersCtrl"> 
-			<ul>
-			  <li ng-repeat="x in kames">
-			    {{ x.Name + ', ' + x.Country }}
-			  </li>
-			</ul>
-	 	
-	 	
- 			<div ng-if="showInfo()"> Am I visible? </div>
- 		</div>
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
 		<script>
 			//set up myApp
-		  	var app = angular.module('myApp', []);
+		  var app = angular.module('myApp', []);
 			app.controller('customersCtrl', function($scope, $http) {
-			    $http.get("http://www.w3schools.com/angular/customers.php")
-			    .success(function(response) {$scope.kames = response.records;});
-			
 
-			//set up a boolean for info state
-			function hasIt(element, index, array) {
-				return {element.Country === 'UK'};
-			};
+				$scope.infoState = false;
+
+                console.log('test');
+                $scope.kames = {};
+
+			    //call $scope.show inside the controller. TODO: will it work if I call it outside .success?
+			    $http.get("http://www.w3schools.com/angular/customers.php")
+			    	.success(function(response) {
+                     // console.log(response);
+				    	$scope.kames = response.records;
+				    // console.log($scope.kames);
+				    	$scope.show($scope.kames);
+	                 	var log = [];
+					});
+
+			    $scope.show = function(kames){
+				 	angular.forEach(kames, function(value) {
+				 			// console.log(value.Country);
+				 		if (value.Country==='UK') {
+				 			$scope.infoState = true;
+				 			return;
+							// console.log('inside for Each');
+				 		}
+				 	});
+				 }
+			    
+			    console.log($scope.kames);//TODO: why does this return an empty array?
+			    // $scope vm = this;
 			 
-			$scope.showInfo = function(){
-				return
-			    $scope.kames.some(hasIt); 
-			};
-		});
-			//traverse the kames array updating alert status
-			/*var log = [];
-			angular.forEach(kames, function(person) {
-				if (person.country==='U') {
-					app.infoHideState = false;
-					this.infoState = true;
-					console.log(app.infoHideState+person.country);
-				}
-			},log);*/
+				//set up a boolean for info state
+				//this.infoHideState = true;
+				
+				//traverse the kames array updating alert status
+								
+				// for(var i = 0; i < $scope.kames.size();i++){
+				// 	console.log($scope.kames[i]);
+				// }
+			});
 				
 			//set up a custom directive to display alertinfo
-		/*	app.directive('myDirective', function(){
+			/*app.directive('myDirective', function(){
     			return{
         			restrict: "E",
         			transclude: app.infoHideState, //in the shadow if true; front-line if false.
-        			template: '<div class="something"> N/A: No data available due to the unmet requirement of the metrics for at least 5 iteration cycles for each project. </div>'+'<div> '+this.infoHideState +'</div>'
+        			template: '<div class="something" ng-transclude> N/A: No data available due to the unmet requirement of the metrics for at least 5 iteration cycles for each project. </div>'+'<div> '+this.infoHideState +'</div>'
     			}
 			});*/
 		</script>
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-controller="customersCtrl"> 
+			<ul>
+				  <li ng-repeat="x in kames">
+				    	{{ x.Name + ', ' + x.Country }} {{}}
+				  </li>
+			</ul>
+
+			<div ng-show="infoState">Look here!
+	 		</div>	
+	 	</div>
+	 	
+<!--  	<my-directive>
+			<button>?</button>
+			<a href="#"> 'N/A' denotes a lack of data </a>
+		</my-directive> -->
+			
 	</body>
 </html>
