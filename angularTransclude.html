@@ -8,28 +8,32 @@
 		  var app = angular.module('myApp', []);
 			app.controller('customersCtrl', function($scope, $http) {
 
-				$scope.infoState = false;
+				$scope.info1State = false;
+				$scope.info2State = false;
 
-                console.log('test');
-                $scope.kames = {};
+                //console.log('test');
+                //$scope.kames = {}; still works without this line
 
-			    //call $scope.show inside the controller. TODO: will it work if I call it outside .success?
+			    //call $scope.show inside the controller. TODO: will it work if I call it outside .success? Not  it did not.
 			    $http.get("http://www.w3schools.com/angular/customers.php")
 			    	.success(function(response) {
-                     // console.log(response);
+                      //console.log(response);works
 				    	$scope.kames = response.records;
-				    // console.log($scope.kames);
+				     //console.log($scope.kames); works
 				    	$scope.show($scope.kames);
 	                 	var log = [];
 					});
 
-			    $scope.show = function(kames){
-				 	angular.forEach(kames, function(value) {
+			    $scope.show = function(anArray){
+				 	angular.forEach(anArray, function(value) { //do not need index inside function if not used
 				 			// console.log(value.Country);
 				 		if (value.Country==='UK') {
-				 			$scope.infoState = true;
+				 			$scope.info1State = true;
 				 			return;
 							// console.log('inside for Each');
+				 		} else if (value.Country==='France') {
+				 			$scope.info2State = true;
+				 			return;
 				 		}
 				 	});
 				 }
@@ -66,8 +70,10 @@
 				  </li>
 			</ul>
 
-			<div ng-show="infoState">Look here!
+			<div ng-show="info1State">There are folks from UK!
 	 		</div>	
+	 		<div ng-show="info2State">There are folks from France. Bienvenue!
+	 		</div>
 	 	</div>
 	 	
 <!--  	<my-directive>
