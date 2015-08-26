@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<body  ng-app="myApp">
+		
+		<div ng-controller="myController">
+    		{{data.time}}
+
+	    	<br/>
+	    	<button ng-click="updateTime()">update time - ng-click</button>
+	    	<button id="updateTimeButton"  >update time</button>
+		</div>
+
+
+		<script>
+		    var app = angular.module("myApp", []);
+		    var myController = app.controller("myController", function($scope) {
+		 
+		        $scope.data = { time : new Date() };
+
+		        $scope.updateTime = function() {
+		            $scope.data.time = new Date();//no click counter
+		        };
+
+		        document.getElementById("updateTimeButton")
+		                .addEventListener('click', function() {
+		            $scope.$apply(function() {
+		            	console.log("update time clicked");//the click counter works on this
+		            	$scope.data.time = new Date();
+		            });
+		            // $scope.$digest();
+		        });
+		    });
+		</script>
+	</body>
+</html>
