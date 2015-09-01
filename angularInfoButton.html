@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<style> 
+			/*.showNone::after {
+				content:"alert 1!";*/
+			#divUK {
+				color: yellow;
+			}
+			#divFr {
+				color: red;
+			}
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+		<script>
+			//set up myApp
+		  var app = angular.module('myApp', []);
+			app.controller('customersCtrl', function($scope, $http) {
+				$scope.info1State = false;
+				$scope.info2State = false;
+                //console.log('test');
+                //$scope.kames = {}; still works without this line
+
+			    //call $scope.show inside the controller. TODO: will it work if I call it outside .success? No it did not.
+			    $http.get("http://www.w3schools.com/angular/customers.php")
+			    	.success(function(response) {
+                      //console.log(response);works
+				    	$scope.kames = response.records;
+				     //console.log($scope.kames); works
+				    	$scope.show($scope.kames);
+					});
+
+			    //show if the data is not from UK; if from UK show the alert in its place.
+			    $scope.show = function(anArray){
+				 	angular.forEach(anArray, function(value, index, theArray) { 
+				 			// console.log(value.Country);
+				 		if (value.Country==='UK') {
+				 			$scope.info1State = true;
+				 			return;
+							// console.log('inside for Each');
+				 		} else if (value.Country==='France') {
+				 			$scope.info2State = true;
+				 			return;
+				 		}
+				 	});
+				 };
+			    
+			    // console.log($scope.kames);//TODO: why does this return an empty array?
+			    // $scope vm = this;
+			 
+				//set up a boolean for info state
+				//this.infoHideState = true;
+				
+				//traverse the kames array updating alert status
+								
+				// for(var i = 0; i < $scope.kames.size();i++){
+				// 	console.log($scope.kames[i]);
+				// }
+			});//customerCtrl
+				
+			//set up a custom directive to display alertinfo
+			/*app.directive('myDirective', function(){
+    			return{
+        			restrict: "E",
+        			transclude: app.infoHideState, //in the shadow if true; front-line if false.
+        			template: '<div class="something" ng-transclude> N/A: No data available due to the unmet requirement of the metrics for at least 5 iteration cycles for each project. </div>'+'<div> '+this.infoHideState +'</div>'
+    			}
+			});*/
+		</script>
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-controller="customersCtrl"> 
+			<ul>
+			  <li ng-repeat="x in kames" ng-class="red">
+			    <span>{{ x.Name + ', ' + x.Country }}</span> 
+			  </li>
+			</ul>
+
+			<div id="divUK" ng-show="info1State">There are folks from UK!</div>	
+	 		<div id="divFr" ng-show="info2State">There are folks from France. Bienvenue!</div>
+	 	</div>
+	 </body>
+</html>
