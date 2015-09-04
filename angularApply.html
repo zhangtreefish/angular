@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+	<script>
+		//set up myApp
+		angular.module('myApp', [])
+		.controller('Ctrl',function($scope, $timeout) {
+		    $scope.timeInMs = 0;
+		    var countUp = function() {
+		        $scope.timeInMs+= 500;
+		        $timeout(countUp, 500);
+		    }
+		    $timeout(countUp, 500);
+		});
+	</script>
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-app="myApp" ng-controller="Ctrl">
+		    <span>Time (in ms): {{timeInMs}}</span>
+		</div>
+	 </body>
+</html>
