@@ -16,16 +16,25 @@
 		<script>
 			//set up myApp
 		  	var app = angular.module('myApp', []);
-			app.controller('sampleSizesCtrl', function($scope) {
-				var vm=this;
-				$scope.sampleSize = 15;
+			app.controller('sampleSizesCtrl', ['$scope', function($scope) {
+		       $scope.charts = ['lineChart', 'lineWithFocusChart'];
+		       $scope.my = { chart: '' };
+
+		       $scope.sampleSize = 15;
                 $scope.sampleSizeOptions = [30,60,90,365];
 
 			    $scope.mySize;
+			    $scope.myChart;
 			    $scope.resetSampleSize = function(sampleSize){//if use vm the binding does not work
-				 	$scope.mySize = $scope.sampleSize;
+				 	$scope.mySize = sampleSize;
 				};
-			});
+
+				//select chart type
+				$scope.selectChartType = function() {
+					$scope.myChart = 'lineWithFocusChart';
+				};
+		     }]);
+			
 		</script>
 	</head>
 
@@ -45,6 +54,19 @@
             <hr>
             <div> mySize = {{mySize}}</div>
             <div> sampleSize = {{sampleSize}}</div>
+
+            <form>
+			   <h2>Which is your favorite?</h2>
+			     <label ng-repeat="chart in charts" for="{{chart}}">
+			       {{chart}}
+			       <input type="radio"
+			              ng-model="my.chart"
+			              ng-value="chart" //this is what is passed to ng-model
+			              id="{{chart}}"
+			              name="favorite">
+			     </label>
+			</form>
+			<div> myType = {{my.chart}} </div> 
 	 	</div>
 	 </body>
 </html>
