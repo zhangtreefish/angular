@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<style> 
+			/*.showNone::after {
+				content:"alert 1!";*/
+			#divUK {
+				color: yellow;
+			}
+			#divFr {
+				color: red;
+			}
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+
+		<script>
+			//set up myApp
+		  	var app = angular.module('myApp', []);
+			app.controller('sampleSizesCtrl', function($scope) {
+				var vm=this;
+				$scope.sampleSize = 15;
+                $scope.sampleSizeOptions = [30,60,90,365];
+
+			    $scope.mySize;
+			    $scope.resetSampleSize = function(sampleSize){//if use vm the binding does not work
+				 	$scope.mySize = $scope.sampleSize;
+				};
+			});
+		</script>
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-controller="sampleSizesCtrl"> 
+			<form name="myForm">
+				<label for ="repeatSelect"> Reset Data Points </lable>
+				<select 
+					name="repeatSelect"
+		            ng-model="sampleSize"
+		            ng-change='resetSampleSize(sampleSize)'
+		            ng-options='option for option in sampleSizeOptions'
+		            style='width:120px'
+	            >
+            	</select>
+            </form>
+            <hr>
+            <div> mySize = {{mySize}}</div>
+            <div> sampleSize = {{sampleSize}}</div>
+	 	</div>
+	 </body>
+</html>
