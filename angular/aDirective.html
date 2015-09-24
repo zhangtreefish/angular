@@ -1,0 +1,61 @@
+<!-- http://www.codinginsight.com/angularjs-directives/ -->
+<!DOCTYPE html>
+<html lang="en-US">
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+		<style type="text/css">
+		.mydirectiveclass {
+
+		}
+		</style>
+	</head>
+	<body ng-app>
+		<div ng-controller="MyController">
+		    <div>
+		        somevar: <span ng-bind="somevar"></span>
+		        <br/>
+		        somevar2: <span ng-bind="somevar2"></span>
+		        <hr/>
+		    </div>
+
+			<my-control param-str="control 1" param-callback="callback()" param-var="somevar"></my-control>
+
+			<my-control param-str="{{titleControl2 }}" param-callback="callback2()" param-var="somevar2"></my-control>
+		</div>
+
+
+		<script>
+
+			var myApp = angular.module('ng',[]);
+			myApp.directive('myControl', function () {
+			    return {
+			        restrict: 'E',
+			        transclude: true,
+			        replace: true,
+			        scope: {
+			            paramStr: '@', // pass as a string
+			            paramCallback: '&', // pass as a function and call with brackets ()
+			            paramVar: '=' // double binding!
+			        },
+			        template: '<div class="str">{{paramStr}}</div>'
+			            + '<div class="callback"><button class="btn" ng-click="paramCallback()">clickame</button></div>'
+			            + '<div class="var"><input type="text" class="form-control" ng-model="paramVar" /></div><hr/>'
+			        //link function ($scope, iterStartElement, attr) {}
+			    };
+			});
+
+			myApp.controller('MyController', ['$scope', function($scope) {
+			    $scope.somevar = "somevar...rrrr";
+			    $scope.somevar2 = "somevar...2!";
+			    $scope.titleControl2 = "Control 2 you beeches!";
+			    $scope.callback = function () {
+			        alert('callback called');
+			    }
+			    $scope.callback2 = function () {
+			        alert('callback2 called');
+			    }
+			}]);
+		</script>
+	</body>
+</html>
