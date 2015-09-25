@@ -16,7 +16,7 @@
 			<div ng-controller="personCtrl"> <!--personCtrl is the controller, myVar is the handle, ng-model is the final target of control;the ng-click is the pistol -->
 				<button ng-click="toggle()">Toggle</button>
 				<p ng-show="myVar">
-					First Name: <input type="text" ng-model="firstName"><br>
+					First Name: <input type="text" ng-model="firstName">
 					Last Name: <input type="text" ng-model="lastName"><br>
 					<br>
 					Full Name: {{firstName + " " + lastName}}
