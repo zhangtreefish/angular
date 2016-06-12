@@ -1,0 +1,62 @@
+<!--source: http://stackoverflow.com/questions/30065902/angular-binding-to-service-value-not-updating -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Demo of the use of a service</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
+  <script>
+	angular.module('worldboxApp', []);
+
+	/* Service */
+	angular.module('worldboxApp')
+	.service('mapService', ['$log',
+	    function($log) {
+	      var self = this; //so that the functions can reference .data; 'this' within the functions would not reach the correct scope
+	      self.data = {
+	        activeCountry: null
+	      }; //we use an object since it can be returned by reference, and changing activeCountry's value will not break the link between it here and the controller using it
+
+	      _init();
+
+	      function _init() {
+	        self.data.activeCountry = '';
+	        $log.log('Init was called!');
+	      }
+
+
+	      this.setCountry = function _setCountry(country) {
+	        $log.log('setCountry was called: ' + country);
+	        self.data.activeCountry = country;
+	      }
+	    }
+	  ]);
+
+	angular.module('worldboxApp')
+	.controller('DrawerController', ['$scope', 'mapService',
+	    function($scope, mapService) {
+	      //map to an object (by ref) rather than just a string (by val), otherwise it's easy to lose reference
+	      $scope.data = mapService.data;
+	      $scope.setCountry = setCountry; //see below
+
+	      function setCountry(country) {
+	        // could have just set $scope.setCountry = mapService.setCountry;
+	        // however we can wrap it here if we want to do something less generic
+	        // like getting data out of an event object, before passing it on to
+	        // the service.
+	        mapService.setCountry(country);
+	      }
+	    }
+	  ]);
+	</script>
+</head>
+<body>
+	<div ng-app="worldboxApp">
+	  <div ng-controller="DrawerController">
+	    <button ng-click="setCountry('USA')">USA</button>
+	    <br />
+	    <button ng-click="setCountry('AUS')">AUS</button>
+	    <br />Active Country: {{data.activeCountry}}
+	  </div>
+	</div>
+</body>
