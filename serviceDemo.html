@@ -6,11 +6,9 @@
   <title>Demo of the use of a service</title>
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
   <script>
-	angular.module('worldboxApp', []);
+	var app =angular.module('worldboxApp', []);
 
-	/* Service */
-	angular.module('worldboxApp')
-	.service('mapService', ['$log',
+	app.service('mapService', ['$log',
 	    function($log) {
 	      var self = this; //so that the functions can reference .data; 'this' within the functions would not reach the correct scope
 	      self.data = {
@@ -24,16 +22,14 @@
 	        $log.log('Init was called!');
 	      }
 
-
-	      this.setCountry = function _setCountry(country) {
+	      self.setCountry = function _setCountry(country) {
 	        $log.log('setCountry was called: ' + country);
 	        self.data.activeCountry = country;
 	      }
 	    }
 	  ]);
 
-	angular.module('worldboxApp')
-	.controller('DrawerController', ['$scope', 'mapService',
+	app.controller('DrawerController', ['$scope', 'mapService',
 	    function($scope, mapService) {
 	      //map to an object (by ref) rather than just a string (by val), otherwise it's easy to lose reference
 	      $scope.data = mapService.data;
